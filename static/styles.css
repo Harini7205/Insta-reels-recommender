@@ -1,139 +1,175 @@
-/* Global Styles */
+/* ----------------------------- */
+/* Global Reset and Base Styles  */
+/* ----------------------------- */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #fafafa;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center all content horizontally */
-    justify-content: center; /* Center all content vertically */
-    height: 100vh; /* Full viewport height */
-    padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 30px 15px;
+}
+
+/* ----------------------------- */
+/* Header Section                */
+/* ----------------------------- */
+header {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    color: #262626;
-    font-weight: 600;
-    margin-bottom: 30px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 10px;
 }
 
-/* Form Styles */
-form {
-    width: 100%;
-    max-width: 600px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center form items horizontally */
-    margin-bottom: 40px;
+header p {
+  color: #4b5563;
+  font-size: 1.05rem;
 }
 
-form label {
-    font-size: 1rem;
-    margin-bottom: 8px;
-    color: #333;
+/* ----------------------------- */
+/* Form Section                  */
+/* ----------------------------- */
+.recommendation-form {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
 }
 
-form input,
-form select,
-form button {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    background-color: #fafafa;
+.recommendation-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #1f2937;
+  font-weight: 600;
 }
 
-form button {
-    background-color: #0095f6;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
+.form-group {
+  width: 100%;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
-form button:hover {
-    background-color: #007bb5;
+label {
+  display: block;
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 6px;
 }
 
-form input:focus,
-form select:focus,
-form button:focus {
-    outline: none;
-    border: 1px solid #0095f6;
+input,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
 }
 
-/* Recommendation Collection Styles */
+input:focus,
+select:focus {
+  border-color: #3b82f6;
+  background-color: #fff;
+  outline: none;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background-color: #3b82f6;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.submit-btn:hover {
+  background-color: #2563eb;
+}
+
+/* ----------------------------- */
+/* Recommendation List Styling   */
+/* ----------------------------- */
 ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 0;
-    justify-content: center; /* Center items horizontally */
-    margin-bottom: 40px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 30px 0;
+  padding: 0;
 }
 
 li {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #e6e6e6;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    text-align: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 15px 20px;
+  width: 220px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+li:hover {
+  transform: translateY(-3px);
 }
 
 strong {
-    font-size: 1.2rem;
-    color: #262626;
-    font-weight: 600;
+  display: block;
+  color: #111827;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
 }
 
 p {
-    font-size: 1rem;
-    color: #666;
-    margin-top: 5px;
+  color: #6b7280;
+  font-size: 0.95rem;
 }
 
-a {
-    text-decoration: none;
-    color: #0095f6;
-    font-weight: 600;
+/* ----------------------------- */
+/* Footer Section                */
+/* ----------------------------- */
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: #6b7280;
+  font-size: 0.9rem;
 }
 
-a:hover {
-    color: #007bb5;
-}
-
-/* Responsive Design */
+/* ----------------------------- */
+/* Responsive Design             */
+/* ----------------------------- */
 @media (max-width: 768px) {
-    body {
-        padding: 15px;
-    }
+  h1 {
+    font-size: 1.8rem;
+  }
 
-    h1 {
-        font-size: 2rem;
-    }
+  .recommendation-form {
+    padding: 25px 20px;
+  }
 
-    form {
-        padding: 15px;
-    }
-
-    li {
-        padding: 10px;
-        width: 150px; /* Make the items smaller for mobile screens */
-    }
+  li {
+    width: 160px;
+    padding: 12px;
+  }
 }

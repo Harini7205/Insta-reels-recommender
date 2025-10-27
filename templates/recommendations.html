@@ -41,21 +41,6 @@
         <p>No recommended content found.</p>
     {% endif %}
 
-    <h2>Users to Follow</h2>
-    {% if users_to_follow %}
-        <ul>
-        {% for user in users_to_follow %}
-            <li>
-                <strong>{{ user.name }}</strong><br>
-                Interests: {{ user.interests }}<br>
-                Followers: {{ user.followers_count }} | Following: {{ user.following_names|join(", ") }}
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No users to follow found.</p>
-    {% endif %}
-
     <br>
     <a href="/">Back to Home</a>
 </body>

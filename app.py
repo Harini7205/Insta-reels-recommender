@@ -10,38 +10,6 @@ content = pd.read_csv('content.csv')
 interactions = pd.read_csv('interactions.csv')
 browsing_history = pd.read_csv('browsing_history.csv')
 
-def recommend_users_to_follow(user_id, users, interactions):
-    # Get the interests of the target user
-    user_interests = users.loc[users['user_id'] == user_id, 'interests'].values[0].split(';')
-    user_following = users.loc[users['user_id'] == user_id, 'following'].values[0].split(';')
-    user_following = set(map(int, user_following))  # Convert to set of ints for easy comparison
-
-    # Find users with similar interests, exclude already followed users
-    similar_users = users[users['user_id'] != user_id].copy()  # Exclude current user
-    similar_users['similar_interest_score'] = similar_users['interests'].apply(
-        lambda interests: len(set(interests.split(';')).intersection(user_interests))
-    )
-
-    # Filter out users already followed and sort by interest score and follower count
-    recommended_users = similar_users[~similar_users['user_id'].isin(user_following)]
-    recommended_users = recommended_users[recommended_users['similar_interest_score'] > 0]
-    recommended_users = recommended_users.sort_values(by=['similar_interest_score', 'followers_count'], ascending=[False, False])
-
-    # Get top 5 recommended users
-    recommended_users = recommended_users[['user_id', 'name', 'followers_count', 'following', 'interests']].head(5)
-
-    # Preprocess following names (split 'following' IDs and map to names)
-    recommended_users['following_names'] = recommended_users['following'].apply(
-        lambda following: [users.loc[users['user_id'] == int(follow_id), 'name'].values[0] 
-                           for follow_id in following.split(';')] if following else []
-    )
-
-    # Clean the 'interests' by replacing semicolons with commas (and adding a space after commas)
-    recommended_users['interests'] = recommended_users['interests'].apply(lambda interests: interests.replace(';', ', ') if interests else '')
-
-    # Convert to a list of dictionaries for template rendering
-    return recommended_users.to_dict(orient='records')
-
 @app.route('/')
 def index():
     return render_template('index.html', content=content.to_dict(orient='records'))
@@ -59,14 +27,16 @@ def get_recommendations():
     interacted_content = content[content['content_id'].isin(interacted_content_ids) | content['content_id'].isin(browsed_content_ids)]
 
     # Generate recommendations based on the selected algorithm
-    if algorithm == 'collaborative':
-        recommendations = collaborative_filtering(user_id, interactions, content, users)
+    if algorithm == 'user-collaborative':
+        recommendations = collaborative_filtering(user_id, interactions, content, is_user_based=True)
+    elif algorithm == 'item-collaborative':
+        recommendations = collaborative_filtering(user_id, interactions, content)
     elif algorithm == 'content-based':
-        recommendations = content_based_filtering(user_id, interactions, browsing_history, content)
+        recommendations = content_based_filtering(user_id, browsing_history, content)
     elif algorithm == 'hybrid':
-        collaborative_recommendations = collaborative_filtering(user_id, interactions, content, users)
-        content_based_recommendations = content_based_filtering(user_id, interactions, browsing_history, content)
-        recommendations = pd.concat([collaborative_recommendations, content_based_recommendations]).drop_duplicates()
+        collaborative_recommendations = collaborative_filtering(user_id, interactions, content)
+        content_based_recommendations = content_based_filtering(user_id, browsing_history, content)
+        recommendations = pd.concat([collaborative_recommendations, content_based_recommendations]).drop_duplicates(subset=['content_id'], keep='first').reset_index(drop=True)
 
     # Ensure 'content_id' column exists before proceeding
     if 'content_id' not in recommendations.columns:
@@ -86,13 +56,9 @@ def get_recommendations():
     recommended_content = recommended_content[['content_id', 'title', 'category', 'popularity']].copy()
     recommended_content['source'] = 'Recommended'
 
-    # Get users to follow based on recommendations
-    users_to_follow = recommend_users_to_follow(user_id, users, interactions)
-
     return render_template('recommendations.html', 
                        interacted_content=interacted_content.to_dict(orient='records'),
-                       recommended_content=recommended_content.to_dict(orient='records'),
-                       users_to_follow=users_to_follow)
+                       recommended_content=recommended_content.to_dict(orient='records'))
 
 if __name__ == '__main__':
     app.run(debug=True)
