@@ -1,16 +1,10 @@
 import pandas as pd
 
-def collaborative_filtering(user_id, interactions, content, is_user_based=False):
+def collaborative_filtering(user_id, interactions, content):
     # Find content that the target user has engaged with
     user_interactions = interactions[interactions['user_id'] == user_id]['content_id'].unique()
-    
-    if is_user_based:
-        # Implement user-based collaborative filtering logic
-        other_users = interactions[interactions['content_id'].isin(user_interactions)]['user_id'].unique()
-        other_content = interactions[interactions['user_id'].isin(other_users)]['content_id'].unique()
-    else:
-        # Implement item-based collaborative filtering logic
-        other_content = interactions[interactions['user_id'] != user_id]['content_id'].unique()
+    other_users = interactions[interactions['content_id'].isin(user_interactions)]['user_id'].unique()
+    other_content = interactions[interactions['user_id'].isin(other_users)]['content_id'].unique()
 
     # Exclude content the user has already interacted with
     recommendations = content[~content['content_id'].isin(user_interactions) & 

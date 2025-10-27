@@ -27,9 +27,7 @@ def get_recommendations():
     interacted_content = content[content['content_id'].isin(interacted_content_ids) | content['content_id'].isin(browsed_content_ids)]
 
     # Generate recommendations based on the selected algorithm
-    if algorithm == 'user-collaborative':
-        recommendations = collaborative_filtering(user_id, interactions, content, is_user_based=True)
-    elif algorithm == 'item-collaborative':
+    if algorithm == 'collaborative':
         recommendations = collaborative_filtering(user_id, interactions, content)
     elif algorithm == 'content-based':
         recommendations = content_based_filtering(user_id, browsing_history, content)
